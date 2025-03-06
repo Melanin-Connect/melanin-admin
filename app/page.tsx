@@ -61,7 +61,7 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6 text-white">Admin Dashboard</h1>
       <button
         onClick={() => openModal()}
         className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md mb-6 shadow-md transition duration-300"
