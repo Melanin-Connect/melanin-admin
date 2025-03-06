@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchBlogs, deleteBlog, createBlog, updateBlog } from "./utils/api";
 import BlogList from "./components/BlogList";
 import BlogForm from "./components/BlogForm";
+import Modal from "./components/modal";
 
 interface Blog {
   _id?: string;
@@ -30,11 +31,13 @@ export default function Dashboard() {
   const openModal = (blog: Blog | null = null) => {
     setSelectedBlog(blog);
     setModalOpen(true);
+    document.body.classList.add("overflow-hidden"); // Prevent scrolling
   };
 
   const closeModal = () => {
     setModalOpen(false);
     setSelectedBlog(null);
+    document.body.classList.remove("overflow-hidden"); // Restore scrolling
   };
 
   const handleSubmit = async (blog: Blog) => {
@@ -58,15 +61,19 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Admin Dashboard</h1>
       <button
         onClick={() => openModal()}
-        className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded mb-4"
+        className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md mb-6 shadow-md transition duration-300"
       >
         ➕ Create New Blog
       </button>
       <BlogList blogs={blogs} onEdit={openModal} onDelete={handleDelete} />
-      {modalOpen && <BlogForm blog={selectedBlog} onClose={closeModal} onSubmit={handleSubmit} />}
+
+      {/* Modal without blur effect */}
+      <Modal isOpen={modalOpen} onClose={closeModal}>
+        <BlogForm blog={selectedBlog} onClose={closeModal} onSubmit={handleSubmit} />
+      </Modal>
     </div>
   );
 }
