@@ -16,7 +16,7 @@ const Dashboard = () => {
         <div className="bg-white p-6 rounded-lg  flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-700">Total Blogs</h3>
-            <p className="text-3xl font-bold text-blue-600">120</p>
+            <p className="text-3xl font-bold text-blue-600">3</p>
           </div>
           <List className="text-blue-600 w-10 h-10" />
         </div>
@@ -24,7 +24,7 @@ const Dashboard = () => {
         <div className="bg-white p-6 rounded-lg  flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-700">Subscriptions</h3>
-            <p className="text-3xl font-bold text-green-600">80</p>
+            <p className="text-3xl font-bold text-green-600">0</p>
           </div>
           <Users className="text-green-600 w-10 h-10" />
         </div>
