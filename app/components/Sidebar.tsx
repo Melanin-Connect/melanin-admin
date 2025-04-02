@@ -28,7 +28,7 @@ const Sidebar = () => {
       {/* Sidebar for large screens */}
       <div className="lg:h-screen lg:w-64 bg-gray-800 text-white flex flex-col p-4 fixed lg:relative z-20 lg:block hidden">
         <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
-        <nav className="flex flex-col mb-96 gap-4">
+        <nav className="flex flex-col mb-[70%] gap-4">
           <Link
             href="/"
             className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
