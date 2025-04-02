@@ -109,7 +109,7 @@ const Sidebar = () => {
           </button>
 
           <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
-          <nav className="flex flex-col mb-60 gap-4">
+          <nav className="flex flex-col mb-[70%] gap-4">
             <Link
               href="/"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
