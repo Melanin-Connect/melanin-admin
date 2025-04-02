@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import pic from "../../public/assets/nextjs.avif"; // Adjust the path if needed
+import Sidebar from "../components/Sidebar";
 
 const BlogList = () => {
   // Sample blog data
@@ -35,7 +36,12 @@ const BlogList = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <>
+    {/* Sidebar Section */}
+    <div className="fixed inset-y-0 left-0 lg:block lg:w-64 w-full z-30">
+      <Sidebar />
+    </div>
+    <div className="ml-0 lg:ml-64 min-h-screen mt-10 bg-gray-100 p-6 flex flex-col">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Blog List</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,6 +74,7 @@ const BlogList = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

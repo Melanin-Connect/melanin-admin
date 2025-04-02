@@ -1,4 +1,5 @@
 "use client";
+import Sidebar from "../components/Sidebar";
 
 import React, { useState } from "react";
 
@@ -42,7 +43,12 @@ const AddBlog = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center text-black justify-center bg-gradient-to-br from-blue-50 to-gray-100 p-6">
+    <>
+      {/* Sidebar Section */}
+      <div className="fixed inset-y-0 left-0 lg:block lg:w-64 w-full z-30">
+        <Sidebar />
+      </div>
+    <div className="min-h-screen flex items-center mt-10 text-black justify-center bg-gradient-to-br from-blue-50 to-gray-100 p-6">
       <div className="w-full max-w-lg bg-white  p-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Create New Blog
@@ -131,6 +137,7 @@ const AddBlog = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

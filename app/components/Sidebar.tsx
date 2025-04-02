@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Link from "next/link";
 import { Home, List, Plus, Users, X } from "lucide-react"; // Import X icon for close button
 import { useState } from "react";
@@ -53,19 +53,23 @@ const Sidebar = () => {
           >
             <Users /> Subscriptions
           </Link>
+
+          <div className="fixed bottom-6 ml-14 transform cursor-pointer -translate-x-1/2 bg-white text-center rounded-2xl z-30">
+            {/* Logout button for desktop */}
+            <Link href='/signin'>
+           
+            <button
+            
+              className="text-black cursor-pointer  text-center py-2 px-4 rounded-lg"
+            >
+              Log Out
+            </button>
+            </Link>
+          </div>
         </nav>
 
-        <div >
-            {/* Logout button for desktop */}
-        <button
-          onClick={handleLogout}
-         className="bg-white mt-auto text-center py-2 px-6 cursor-pointer text-black rounded-2xl"
-        >
-          Log Out
-        </button>
-        </div>
+        {/* Logout button for mobile */}
       </div>
-      
 
       {/* Mobile Navbar toggle button */}
       <div className="lg:hidden flex items-center p-4 bg-gray-800 text-white fixed top-0 left-0 w-full z-30">
@@ -141,15 +145,17 @@ const Sidebar = () => {
           </nav>
 
           {/* Logout button for mobile */}
-          <div className="bg-white text-center rounded-2xl">
+          <div className="fixed bottom-6 ml-20 transform -translate-x-1/2 bg-white text-center rounded-2xl z-30">
             {/* Logout button for desktop */}
-        <button
-          onClick={handleLogout}
-          className="mt-auto text-black text-center py-2 px-4 rounded-lg"
-        >
-          Log Out
-        </button>
-        </div>
+            <Link href='/signin'>
+            <button
+             
+              className="text-black text-center py-2 px-4 rounded-lg"
+            >
+              Log Out
+            </button>
+            </Link>
+          </div>
         </div>
       </div>
     </>

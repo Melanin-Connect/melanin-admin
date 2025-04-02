@@ -1,6 +1,5 @@
 // app/layout.tsx
 import './globals.css';
-import Sidebar from './components/Sidebar';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -18,7 +17,7 @@ export default function RootLayout({
       <body>
         <div className="h-screen flex">
           {/* Sidebar Component */}
-          <Sidebar />
+    
 
           {/* Main Content Area */}
           <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">
