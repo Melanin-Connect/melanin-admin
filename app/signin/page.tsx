@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
 
@@ -54,7 +54,7 @@ const LoginPage = () => {
         </form>
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/signup">
               <span className="text-blue-600 hover:underline">Sign Up</span>
             </Link>

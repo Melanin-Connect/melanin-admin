@@ -17,11 +17,7 @@ const Sidebar = () => {
     setIsOpen(false); // Close the sidebar
   };
 
-  // Placeholder logout function
-  const handleLogout = () => {
-    // Implement your logout logic here, e.g., clear session, redirect to login, etc.
-    console.log("Logged out!");
-  };
+ 
 
   return (
     <>
