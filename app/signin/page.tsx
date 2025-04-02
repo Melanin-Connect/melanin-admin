@@ -13,7 +13,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <div className="min-h-screen flex items-center text-black justify-center bg-gray-100 p-6">
       <div className="w-full max-w-sm bg-white p-8 rounded-lg ">
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
