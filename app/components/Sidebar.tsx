@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Link from "next/link";
 import { Home, List, Plus, Users, X } from "lucide-react"; // Import X icon for close button
 import { useState } from "react";
@@ -17,12 +17,18 @@ const Sidebar = () => {
     setIsOpen(false); // Close the sidebar
   };
 
+  // Placeholder logout function
+  const handleLogout = () => {
+    // Implement your logout logic here, e.g., clear session, redirect to login, etc.
+    console.log("Logged out!");
+  };
+
   return (
     <>
       {/* Sidebar for large screens */}
       <div className="lg:h-screen lg:w-64 bg-gray-800 text-white flex flex-col p-4 fixed lg:relative z-20 lg:block hidden">
         <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
-        <nav className="flex flex-col gap-4">
+        <nav className="flex flex-col mb-96 gap-4">
           <Link
             href="/"
             className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
@@ -48,7 +54,18 @@ const Sidebar = () => {
             <Users /> Subscriptions
           </Link>
         </nav>
+
+        <div >
+            {/* Logout button for desktop */}
+        <button
+          onClick={handleLogout}
+         className="bg-white mt-auto text-center py-2 px-6 cursor-pointer text-black rounded-2xl"
+        >
+          Log Out
+        </button>
+        </div>
       </div>
+      
 
       {/* Mobile Navbar toggle button */}
       <div className="lg:hidden flex items-center p-4 bg-gray-800 text-white fixed top-0 left-0 w-full z-30">
@@ -92,7 +109,7 @@ const Sidebar = () => {
           </button>
 
           <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
-          <nav className="flex flex-col gap-4">
+          <nav className="flex flex-col mb-60 gap-4">
             <Link
               href="/"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
@@ -122,6 +139,17 @@ const Sidebar = () => {
               <Users /> Subscriptions
             </Link>
           </nav>
+
+          {/* Logout button for mobile */}
+          <div className="bg-white text-center rounded-2xl">
+            {/* Logout button for desktop */}
+        <button
+          onClick={handleLogout}
+          className="mt-auto text-black text-center py-2 px-4 rounded-lg"
+        >
+          Log Out
+        </button>
+        </div>
         </div>
       </div>
     </>
