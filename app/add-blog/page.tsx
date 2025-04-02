@@ -42,7 +42,7 @@ const AddBlog = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 p-6">
+    <div className="min-h-screen flex items-center text-black justify-center bg-gradient-to-br from-blue-50 to-gray-100 p-6">
       <div className="w-full max-w-lg bg-white  p-8">
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Create New Blog
