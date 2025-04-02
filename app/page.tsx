@@ -6,14 +6,9 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col">
       {/* Header Section */}
-      <header className="flex justify-between items-center bg-white p-4 rounded-lg  mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Welcome, Admin</h1>
-          <p className="text-sm text-gray-600">Manage blogs and subscriptions efficiently</p>
-        </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-          Log Out
-        </button>
+      <header className="flex justify-center text-black items-center bg-white p-4 rounded-lg  mb-6">
+     
+       Welcome
       </header>
 
       {/* Stats Overview */}

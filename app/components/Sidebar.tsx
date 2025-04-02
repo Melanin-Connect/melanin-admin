@@ -1,6 +1,6 @@
-"use client";
+'use client'
 import Link from "next/link";
-import { Home, List, Plus, Users } from "lucide-react";
+import { Home, List, Plus, Users, X } from "lucide-react"; // Import X icon for close button
 import { useState } from "react";
 
 const Sidebar = () => {
@@ -9,10 +9,18 @@ const Sidebar = () => {
   // Toggle sidebar visibility
   const toggleSidebar = () => setIsOpen((prev) => !prev);
 
+  // Close the sidebar when clicking outside
+  const closeSidebar = () => setIsOpen(false);
+
+  // Close the sidebar when a link is clicked
+  const handleLinkClick = () => {
+    setIsOpen(false); // Close the sidebar
+  };
+
   return (
     <>
-      {/* Sidebar for larger screens */}
-      <div className="lg:h-screen lg:w-64 bg-gray-800 text-white flex flex-col p-4 fixed lg:relative z-20">
+      {/* Sidebar for large screens */}
+      <div className="lg:h-screen lg:w-64 bg-gray-800 text-white flex flex-col p-4 fixed lg:relative z-20 lg:block hidden">
         <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
         <nav className="flex flex-col gap-4">
           <Link
@@ -70,32 +78,46 @@ const Sidebar = () => {
         className={`lg:hidden fixed inset-0 bg-gray-800 bg-opacity-75 z-50 transition-transform duration-300 transform ${
           isOpen ? "translate-y-0" : "-translate-y-full"
         }`}
-        onClick={() => setIsOpen(false)} // Close the sidebar if clicked outside
+        onClick={closeSidebar} // Close sidebar if clicked outside
       >
-        <div className="w-full h-full p-6 bg-gray-800 text-white">
+        <div
+          className="w-full h-full p-6 bg-gray-800 text-white relative"
+          onClick={(e) => e.stopPropagation()} // Prevent sidebar from closing when clicked inside
+        >
+          <button
+            onClick={closeSidebar}
+            className="absolute top-4 right-4 text-white"
+          >
+            <X className="h-6 w-6" /> {/* Close Icon */}
+          </button>
+
           <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
           <nav className="flex flex-col gap-4">
             <Link
               href="/"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+              onClick={handleLinkClick} // Close the sidebar when a link is clicked
             >
               <Home /> Dashboard
             </Link>
             <Link
               href="/add-blog"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+              onClick={handleLinkClick} // Close the sidebar when a link is clicked
             >
               <Plus /> Add Blog
             </Link>
             <Link
               href="/blog-list"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+              onClick={handleLinkClick} // Close the sidebar when a link is clicked
             >
               <List /> Blog List
             </Link>
             <Link
               href="/subscription"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+              onClick={handleLinkClick} // Close the sidebar when a link is clicked
             >
               <Users /> Subscriptions
             </Link>
