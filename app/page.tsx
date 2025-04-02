@@ -1,79 +1,108 @@
-"use client";
+import React from "react";
+import { Plus, List, Users, BarChart2 } from "lucide-react";
+import Link from "next/link";
 
-import { useEffect, useState } from "react";
-import { fetchBlogs, deleteBlog, createBlog, updateBlog } from "./utils/api";
-import BlogList from "./components/BlogList";
-import BlogForm from "./components/BlogForm";
-import Modal from "./components/modal";
-
-interface Blog {
-  _id?: string;
-  title: string;
-  content: string;
-  category: string;
-  author: string;
-}
-
-export default function Dashboard() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
-
-  useEffect(() => {
-    loadBlogs();
-  }, []);
-
-  const loadBlogs = async () => {
-    const data = await fetchBlogs();
-    setBlogs(data);
-  };
-
-  const openModal = (blog: Blog | null = null) => {
-    setSelectedBlog(blog);
-    setModalOpen(true);
-    document.body.classList.add("overflow-hidden"); // Prevent scrolling
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setSelectedBlog(null);
-    document.body.classList.remove("overflow-hidden"); // Restore scrolling
-  };
-
-  const handleSubmit = async (blog: Blog) => {
-    if (selectedBlog) {
-      await updateBlog(selectedBlog._id!, blog);
-    } else {
-      await createBlog(blog);
-    }
-    closeModal();
-    loadBlogs();
-  };
-
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteBlog(id);
-      setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
-    } catch (error) {
-      console.error("Error deleting blog:", error);
-    }
-  };
-
+const Dashboard = () => {
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-white">Admin Dashboard</h1>
-      <button
-        onClick={() => openModal()}
-        className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md mb-6 shadow-md transition duration-300"
-      >
-        ➕ Create New Blog
-      </button>
-      <BlogList blogs={blogs} onEdit={openModal} onDelete={handleDelete} />
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col">
+      {/* Header Section */}
+      <header className="flex justify-between items-center bg-white p-4 rounded-lg  mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Welcome, Admin</h1>
+          <p className="text-sm text-gray-600">Manage blogs and subscriptions efficiently</p>
+        </div>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          Log Out
+        </button>
+      </header>
 
-      {/* Modal without blur effect */}
-      <Modal isOpen={modalOpen} onClose={closeModal}>
-        <BlogForm blog={selectedBlog} onClose={closeModal} onSubmit={handleSubmit} />
-      </Modal>
+      {/* Stats Overview */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="bg-white p-6 rounded-lg  flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700">Total Blogs</h3>
+            <p className="text-3xl font-bold text-blue-600">120</p>
+          </div>
+          <List className="text-blue-600 w-10 h-10" />
+        </div>
+
+        <div className="bg-white p-6 rounded-lg  flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700">Subscriptions</h3>
+            <p className="text-3xl font-bold text-green-600">80</p>
+          </div>
+          <Users className="text-green-600 w-10 h-10" />
+        </div>
+
+        <div className="bg-white p-6 rounded-lg  flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-700">Analytics</h3>
+            <p className="text-3xl font-bold text-yellow-600">Monthly Report</p>
+          </div>
+          <BarChart2 className="text-yellow-600 w-10 h-10" />
+        </div>
+      </section>
+
+      {/* Quick Actions Section */}
+      <section className="bg-white p-6 rounded-lg  mb-6">
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Link
+            href="/add-blog"
+            className="flex items-center gap-4 p-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          >
+            <Plus className="w-8 h-8" />
+            Add Blog
+          </Link>
+          <Link
+            href="/blog-list"
+            className="flex items-center gap-4 p-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+          >
+            <List className="w-8 h-8" />
+            View Blogs
+          </Link>
+          <Link
+            href="/subscriptions"
+            className="flex items-center gap-4 p-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition"
+          >
+            <Users className="w-8 h-8" />
+            Manage Subscriptions
+          </Link>
+        </div>
+      </section>
+
+      {/* Recent Blogs Section */}
+      <section className="bg-white p-6 rounded-lg ">
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Blogs</h2>
+        <div className="space-y-4">
+          <div className="p-4 border rounded-lg hover:bg-gray-50 flex justify-between items-center">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">How to Master Next.js</h3>
+              <p className="text-sm text-gray-600">Published on 2025-04-01</p>
+            </div>
+            <Link
+              href="/blog-list"
+              className="text-blue-600 hover:underline"
+            >
+              View
+            </Link>
+          </div>
+          <div className="p-4 border rounded-lg hover:bg-gray-50 flex justify-between items-center">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">Using Tailwind CSS with Next.js</h3>
+              <p className="text-sm text-gray-600">Published on 2025-03-28</p>
+            </div>
+            <Link
+              href="/blog-list"
+              className="text-blue-600 hover:underline"
+            >
+              View
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
-}
+};
+
+export default Dashboard;
