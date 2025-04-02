@@ -1,4 +1,6 @@
 import React from "react";
+import Image from "next/image";
+import pic from "../../public/assets/nextjs.avif"; // Adjust the path if needed
 
 const BlogList = () => {
   // Sample blog data
@@ -10,7 +12,7 @@ const BlogList = () => {
       description:
         "Learn how to build scalable applications using Next.js 14 with advanced features.",
       date: "2025-04-01",
-      imageUrl: "/images/nextjs.jpg", // Replace with your image paths
+      imageUrl: pic, // Using imported image path
     },
     {
       id: 2,
@@ -19,7 +21,7 @@ const BlogList = () => {
       description:
         "Discover practical tips for maintaining a healthy lifestyle and boosting your well-being.",
       date: "2025-03-28",
-      imageUrl: "/images/health.jpg", // Replace with your image paths
+      imageUrl: pic, // Use the same image or a different one as needed
     },
     {
       id: 3,
@@ -28,7 +30,7 @@ const BlogList = () => {
       description:
         "A beginner-friendly guide to understanding TypeScript and its benefits in modern development.",
       date: "2025-03-20",
-      imageUrl: "/images/typescript.jpg", // Replace with your image paths
+      imageUrl: pic, // External image URL
     },
   ];
 
@@ -40,12 +42,14 @@ const BlogList = () => {
         {blogs.map((blog) => (
           <div
             key={blog.id}
-            className="bg-white rounded-lg  hover:shadow-lg transition duration-300 overflow-hidden"
+            className="bg-white rounded-lg hover:shadow-lg transition duration-300 overflow-hidden"
           >
-            {/* Blog Image */}
-            <img
+            {/* Blog Image with next/image */}
+            <Image
               src={blog.imageUrl}
               alt={blog.title}
+              width={500} // Set width
+              height={300} // Set height
               className="w-full h-48 object-cover"
             />
 
