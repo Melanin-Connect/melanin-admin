@@ -62,7 +62,7 @@ const Dashboard = () => {
             View Blogs
           </Link>
           <Link
-            href="/subscriptions"
+            href="/subscription"
             className="flex items-center gap-4 p-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition"
           >
             <Users className="w-8 h-8" />

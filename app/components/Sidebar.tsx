@@ -1,25 +1,108 @@
+"use client";
 import Link from "next/link";
 import { Home, List, Plus, Users } from "lucide-react";
+import { useState } from "react";
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Toggle sidebar visibility
+  const toggleSidebar = () => setIsOpen((prev) => !prev);
+
   return (
-    <div className="h-screen w-64 bg-gray-800 text-white flex flex-col p-4">
-      <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
-      <nav className="flex flex-col gap-4">
-        <Link href="/" className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-          <Home /> Dashboard
-        </Link>
-        <Link href="/add-blog" className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-          <Plus /> Add Blog
-        </Link>
-        <Link href="/blog-list" className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-          <List /> Blog List
-        </Link>
-        <Link href="/subscription" className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded">
-          <Users /> Subscriptions
-        </Link>
-      </nav>
-    </div>
+    <>
+      {/* Sidebar for larger screens */}
+      <div className="lg:h-screen lg:w-64 bg-gray-800 text-white flex flex-col p-4 fixed lg:relative z-20">
+        <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
+        <nav className="flex flex-col gap-4">
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+          >
+            <Home /> Dashboard
+          </Link>
+          <Link
+            href="/add-blog"
+            className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+          >
+            <Plus /> Add Blog
+          </Link>
+          <Link
+            href="/blog-list"
+            className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+          >
+            <List /> Blog List
+          </Link>
+          <Link
+            href="/subscription"
+            className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+          >
+            <Users /> Subscriptions
+          </Link>
+        </nav>
+      </div>
+
+      {/* Mobile Navbar toggle button */}
+      <div className="lg:hidden flex items-center p-4 bg-gray-800 text-white fixed top-0 left-0 w-full z-30">
+        <button
+          onClick={toggleSidebar}
+          className="text-white focus:outline-none"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="h-6 w-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile Sidebar Dropdown */}
+      <div
+        className={`lg:hidden fixed inset-0 bg-gray-800 bg-opacity-75 z-50 transition-transform duration-300 transform ${
+          isOpen ? "translate-y-0" : "-translate-y-full"
+        }`}
+        onClick={() => setIsOpen(false)} // Close the sidebar if clicked outside
+      >
+        <div className="w-full h-full p-6 bg-gray-800 text-white">
+          <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
+          <nav className="flex flex-col gap-4">
+            <Link
+              href="/"
+              className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+            >
+              <Home /> Dashboard
+            </Link>
+            <Link
+              href="/add-blog"
+              className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+            >
+              <Plus /> Add Blog
+            </Link>
+            <Link
+              href="/blog-list"
+              className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+            >
+              <List /> Blog List
+            </Link>
+            <Link
+              href="/subscription"
+              className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+            >
+              <Users /> Subscriptions
+            </Link>
+          </nav>
+        </div>
+      </div>
+    </>
   );
 };
 
