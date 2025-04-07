@@ -1,8 +1,9 @@
 "use client";
+
 import Link from "next/link";
 import { Home, List, Plus, Users, X } from "lucide-react"; // Import X icon for close button
 import { useState } from "react";
-
+import {logoutUser} from "../lib/api-client"
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -16,8 +17,6 @@ const Sidebar = () => {
   const handleLinkClick = () => {
     setIsOpen(false); // Close the sidebar
   };
-
- 
 
   return (
     <>
@@ -52,14 +51,10 @@ const Sidebar = () => {
 
           <div className="fixed bottom-6 ml-14 transform cursor-pointer -translate-x-1/2 bg-white text-center rounded-2xl z-30">
             {/* Logout button for desktop */}
-            <Link href='/signin'>
-           
-            <button
-            
-              className="text-black cursor-pointer  text-center py-2 px-4 rounded-lg"
-            >
-              Log Out
-            </button>
+            <Link href="/signin">
+              <button className="text-black cursor-pointer  text-center py-2 px-4 rounded-lg">
+                Log Out
+              </button>
             </Link>
           </div>
         </nav>
@@ -142,15 +137,12 @@ const Sidebar = () => {
 
           {/* Logout button for mobile */}
           <div className="fixed bottom-6 ml-20 transform -translate-x-1/2 bg-white text-center rounded-2xl z-30">
-            {/* Logout button for desktop */}
-            <Link href='/signin'>
             <button
-             
+              onClick={logoutUser}
               className="text-black text-center py-2 px-4 rounded-lg"
             >
               Log Out
             </button>
-            </Link>
           </div>
         </div>
       </div>
