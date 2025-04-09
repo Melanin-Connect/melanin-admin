@@ -1,45 +1,64 @@
 "use client";
-import Sidebar from "../components/Sidebar";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Sidebar from "../components/Sidebar";
+import { createBlog, BlogFormData } from "../lib/blog-client";
 
 const AddBlog = () => {
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+  const [formData, setFormData] = useState<BlogFormData>({
     title: "",
-    description: "",
+    content: "",
     category: "",
-    image: null as File | null,
+    author: "",
+    image: "",
   });
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-  // Handle input change
+  // Handle form input changes
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Handle image upload and preview
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
-      setFormData((prev) => ({ ...prev, image: file }));
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (reader.result) {
-          setImagePreview(reader.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+
+    // Basic validation
+    if (
+      !formData.title.trim() ||
+      !formData.content.trim() ||
+      !formData.author.trim() ||
+      !formData.category.trim()
+      
+    ) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const newBlog = await createBlog(formData);
+      router.push(`/blog-detials/${newBlog._id}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create blog");
+      console.error("Error creating blog:", err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -48,95 +67,161 @@ const AddBlog = () => {
       <div className="fixed inset-y-0 left-0 lg:block lg:w-64 w-full z-30">
         <Sidebar />
       </div>
-    <div className="min-h-screen flex items-center mt-10 text-black justify-center bg-gradient-to-br from-blue-50 to-gray-100 p-6">
-      <div className="w-full max-w-lg bg-white  p-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Create New Blog
-        </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Image Upload with Preview */}
-          <div>
-            <label className="block font-medium text-gray-700 mb-2">
-              Thumbnail Image
-            </label>
-            <div className="relative w-full h-48 bg-gray-100 rounded-md border border-dashed border-gray-400 flex justify-center items-center overflow-hidden">
-              {imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt="Image preview"
-                  className="object-cover w-full h-full rounded-md"
-                />
-              ) : (
-                <span className="text-gray-500">No image selected</span>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-              />
+      <div className="ml-0 lg:ml-64 min-h-screen mt-10 bg-gray-100 p-6">
+        <div className="max-w-2xl mx-auto bg-white rounded-lg text-black  overflow-hidden">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
+                Create New Blog Post
+              </h2>
+              <Link
+                href="/"
+                className="text-blue-600 hover:text-blue-800 flex items-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                Back to blogs
+              </Link>
             </div>
-          </div>
 
-          {/* Blog Title */}
-          <div>
-            <label className="block font-medium text-gray-700 mb-2">
-              Blog Title
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Enter blog title"
-              className="w-full border rounded-md p-3 focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
 
-          {/* Blog Description */}
-          <div>
-            <label className="block font-medium text-gray-700 mb-2">
-              Blog Description
-            </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Enter blog description"
-              rows={5}
-              className="w-full border rounded-md p-3 focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
+            {/* Blog Form */}
+            <form onSubmit={handleSubmit}>
+              {/* Title Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="title"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Title *
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
 
-          {/* Blog Category */}
-          <div>
-            <label className="block font-medium text-gray-700 mb-2">
-              Blog Category
-            </label>
-            <input
-              type="text"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              placeholder="Enter blog category"
-              className="w-full border rounded-md p-3 focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
+              {/* Author Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="author"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Author *
+                </label>
+                <input
+                  type="text"
+                  id="author"
+                  name="author"
+                  value={formData.author}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-gray-700 text-white py-3 rounded-md font-medium hover:bg-blue-700 transition duration-300"
-          >
-            Publish Blog
-          </button>
-        </form>
+              {/* Category Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="category"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Category *
+                </label>
+                <select
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="">Select a category</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Lifestyle">Lifestyle</option>
+                  <option value="Business">Business</option>
+                  <option value="Health">Health</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Food">Food</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              {/* Image URL Field */}
+              <div className="mb-4">
+                <label
+                  htmlFor="image"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Image URL (optional)
+                </label>
+                <input
+                  type="url"
+                  id="image"
+                  name="image"
+                  value={formData.image}
+                  onChange={handleChange}
+                  placeholder="https://example.com/image.jpg"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Content Field */}
+              <div className="mb-6">
+                <label
+                  htmlFor="content"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Content *
+                </label>
+                <textarea
+                  id="content"
+                  name="content"
+                  value={formData.content}
+                  onChange={handleChange}
+                  rows={10}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                ></textarea>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 disabled:opacity-50"
+                >
+                  {submitting ? "Creating..." : "Create Blog Post"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
-    </div>
     </>
   );
 };

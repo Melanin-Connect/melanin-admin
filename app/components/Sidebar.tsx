@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Home, List, Plus, Users, X } from "lucide-react"; // Import X icon for close button
 import { useState } from "react";
-import {logoutUser} from "../lib/api-client"
+import { logoutUser } from "../lib/api-client";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
