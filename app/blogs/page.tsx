@@ -6,7 +6,7 @@ import Link from "next/link";
 import Sidebar from "../components/Sidebar";
 import { getBlogs, Blog } from "../lib/blog-client";
 
-const BlogList = () => {
+export default function BlogList() {
   // State for blogs data and loading state
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -117,7 +117,7 @@ const BlogList = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogs.map((blog) => (
               <Link
-                href={`/blog-detials/${blog._id}`}
+                href={`/blogs/${blog._id}`}
                 key={blog._id}
                 className="bg-white rounded-lg hover:shadow-lg transition duration-300 overflow-hidden cursor-pointer flex flex-col h-full"
               >
@@ -202,6 +202,4 @@ const BlogList = () => {
       </div>
     </>
   );
-};
-
-export default BlogList;
+}

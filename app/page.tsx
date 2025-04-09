@@ -44,7 +44,7 @@ const Dashboard = () => {
   // Get the 3 most recent blogs
   const recentBlogs = [...blogs]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 3);
+    .slice(0, 4);
 
   return (
     <>
@@ -213,7 +213,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <Link
-                    href={`/blog-detials/${blog._id}`}
+                    href={`/blogs/${blog._id}`}
                     className="text-blue-600 hover:underline"
                   >
                     View

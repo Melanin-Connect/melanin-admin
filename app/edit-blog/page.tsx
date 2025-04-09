@@ -6,7 +6,7 @@ import Link from "next/link";
 import Sidebar from "../components/Sidebar";
 import { getBlogById, updateBlog, BlogFormData } from "../lib/blog-client";
 
-const EditBlog = () => {
+export default function EditBlog() {
   const params = useParams();
   const router = useRouter();
   const blogId = params.id as string;
@@ -248,6 +248,4 @@ const EditBlog = () => {
       </div>
     </>
   );
-};
-
-export default EditBlog;
+}

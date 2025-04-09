@@ -4,18 +4,18 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import Sidebar from "../components/Sidebar";
-import { 
-  getBlogById, 
-  likeBlog, 
-  addComment, 
-  deleteComment, 
-  Blog, 
+import Sidebar from "../../components/Sidebar";
+import {
+  getBlogById,
+  likeBlog,
+  addComment,
+  deleteComment,
+  deleteBlog,
+  Blog,
   CommentFormData,
-  deleteBlog
-} from "../lib/blog-client";
+} from "../../lib/blog-client";
 
-const BlogDetail = () => {
+export default function BlogDetail() {
   const params = useParams();
   const router = useRouter();
   const blogId = params.id as string;
@@ -26,7 +26,7 @@ const BlogDetail = () => {
   const [error, setError] = useState<string | null>(null);
   const [comment, setComment] = useState<CommentFormData>({
     user: "",
-    text: ""
+    text: "",
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [deleteConfirm, setDeleteConfirm] = useState<boolean>(false);
@@ -74,7 +74,7 @@ const BlogDetail = () => {
   // Handle comment submission
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!comment.user.trim() || !comment.text.trim()) {
       alert("Please fill in all fields");
       return;
@@ -96,7 +96,7 @@ const BlogDetail = () => {
   // Handle delete comment
   const handleDeleteComment = async (commentId: string) => {
     if (!confirm("Are you sure you want to delete this comment?")) return;
-    
+
     try {
       const response = await deleteComment(blogId, commentId);
       setBlog(response.blog);
@@ -114,7 +114,7 @@ const BlogDetail = () => {
   const confirmDelete = async () => {
     try {
       await deleteBlog(blogId);
-      router.push("/");
+      router.push("/blog");
     } catch (err) {
       console.error("Error deleting blog:", err);
       alert(err instanceof Error ? err.message : "Failed to delete blog");
@@ -128,7 +128,7 @@ const BlogDetail = () => {
       <div className="fixed inset-y-0 left-0 lg:block lg:w-64 w-full z-30">
         <Sidebar />
       </div>
-      <div className="ml-0 lg:ml-64 min-h-screen pt-10 bg-gray-100 pb-10">
+      <div className="ml-0 lg:ml-64 min-h-screen pt-10 text-black bg-gray-100 pb-10">
         {/* Loading State */}
         {loading && (
           <div className="flex justify-center items-center h-64">
@@ -140,7 +140,7 @@ const BlogDetail = () => {
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mx-6 mb-4">
             <span className="block sm:inline">{error}</span>
-            <Link href="/" className="text-red-700 underline ml-2">
+            <Link href="/blogs" className="text-red-700 underline ml-2">
               Return to blog list
             </Link>
           </div>
@@ -150,24 +150,24 @@ const BlogDetail = () => {
         {!loading && blog && (
           <div className="max-w-4xl mx-auto px-6">
             {/* Blog Header */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-              {/* Blog Image - FIXED: Changed from blog.image to blog.imageUrl */}
+            <div className="bg-white rounded-lg overflow-hidden mb-8">
+              {/* Blog Image */}
               {blog.image && (
                 <div className="relative w-full h-80">
-                  <Image 
-                    src={blog.image} 
+                  <Image
+                    src={blog.image}
                     alt={blog.title}
                     fill
                     className="object-cover"
                   />
                 </div>
               )}
-              
+
               {/* Blog Title and Meta */}
               <div className="p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <Link 
-                    href="/"
+                  <Link
+                    href="/blogs"
                     className="text-blue-600 hover:text-blue-800 flex items-center"
                   >
                     <svg
@@ -201,7 +201,9 @@ const BlogDetail = () => {
                     </button>
                   </div>
                 </div>
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">{blog.title}</h1>
+                <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                  {blog.title}
+                </h1>
                 <div className="flex flex-wrap gap-4 mb-4 text-sm text-gray-600">
                   <span>By {blog.author}</span>
                   <span>{formatDate(blog.createdAt)}</span>
@@ -218,9 +220,11 @@ const BlogDetail = () => {
             </div>
 
             {/* Like Button */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div className="bg-white rounded-lg p-6 mb-8">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">Did you enjoy this article?</h2>
+                <h2 className="text-xl font-bold">
+                  Did you enjoy this article?
+                </h2>
                 <button
                   onClick={handleLike}
                   className="flex items-center bg-red-100 hover:bg-red-200 text-red-800 px-4 py-2 rounded-full transition duration-300"
@@ -245,8 +249,10 @@ const BlogDetail = () => {
             </div>
 
             {/* Comments Section */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold mb-6">Comments ({blog.comments.length})</h2>
+            <div className="bg-white rounded-lg p-6">
+              <h2 className="text-xl font-bold mb-6">
+                Comments ({blog.comments.length})
+              </h2>
 
               {/* Comment Form */}
               <form onSubmit={handleCommentSubmit} className="mb-8">
@@ -258,7 +264,9 @@ const BlogDetail = () => {
                     type="text"
                     id="user"
                     value={comment.user}
-                    onChange={(e) => setComment({ ...comment, user: e.target.value })}
+                    onChange={(e) =>
+                      setComment({ ...comment, user: e.target.value })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
@@ -270,7 +278,9 @@ const BlogDetail = () => {
                   <textarea
                     id="text"
                     value={comment.text}
-                    onChange={(e) => setComment({ ...comment, text: e.target.value })}
+                    onChange={(e) =>
+                      setComment({ ...comment, text: e.target.value })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
                     required
                   ></textarea>
@@ -288,7 +298,10 @@ const BlogDetail = () => {
               {blog.comments.length > 0 ? (
                 <div className="space-y-6">
                   {blog.comments.map((comment) => (
-                    <div key={comment._id} className="border-b border-gray-200 pb-4 last:border-0">
+                    <div
+                      key={comment._id}
+                      className="border-b border-gray-200 pb-4 last:border-0"
+                    >
                       <div className="flex justify-between items-start">
                         <div>
                           <h4 className="font-semibold">{comment.user}</h4>
@@ -297,7 +310,9 @@ const BlogDetail = () => {
                           </p>
                         </div>
                         <button
-                          onClick={() => comment._id && handleDeleteComment(comment._id)}
+                          onClick={() =>
+                            comment._id && handleDeleteComment(comment._id)
+                          }
                           className="text-red-600 hover:text-red-800"
                           title="Delete comment"
                         >
@@ -322,7 +337,9 @@ const BlogDetail = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-6">No comments yet. Be the first to comment!</p>
+                <p className="text-gray-500 text-center py-6">
+                  No comments yet. Be the first to comment!
+                </p>
               )}
             </div>
           </div>
@@ -333,7 +350,10 @@ const BlogDetail = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
               <h3 className="text-xl font-bold mb-4">Delete Blog Post</h3>
-              <p className="mb-6">Are you sure you want to delete this blog post? This action cannot be undone.</p>
+              <p className="mb-6">
+                Are you sure you want to delete this blog post? This action
+                cannot be undone.
+              </p>
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setDeleteConfirm(false)}
@@ -354,6 +374,4 @@ const BlogDetail = () => {
       </div>
     </>
   );
-};
-
-export default BlogDetail;
+}

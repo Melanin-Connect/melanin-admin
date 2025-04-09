@@ -21,7 +21,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Sidebar for large screens */}
-      <div className="lg:h-screen lg:w-64 bg-gray-800 text-white flex flex-col p-4 fixed lg:relative z-20 lg:block hidden">
+      <div className="lg:h-screen lg:w-64 bg-gray-800 text-white  flex-col p-4 fixed lg:relative z-20 lg:block hidden">
         <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
         <nav className="flex flex-col mb-[70%] gap-4">
           <Link
@@ -37,25 +37,27 @@ const Sidebar = () => {
             <Plus /> Add Blog
           </Link>
           <Link
-            href="/blog-list"
+            href="/blogs"
             className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
           >
             <List /> Blog List
           </Link>
           <Link
-            href="/subscription"
+            href="/settings"
             className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
           >
-            <Users /> Subscriptions
+            <Users /> settings
           </Link>
 
           <div className="fixed bottom-6 ml-14 transform cursor-pointer -translate-x-1/2 bg-white text-center rounded-2xl z-30">
             {/* Logout button for desktop */}
-            <Link href="/signin">
-              <button className="text-black cursor-pointer  text-center py-2 px-4 rounded-lg">
-                Log Out
-              </button>
-            </Link>
+
+            <button
+              onClick={logoutUser}
+              className="text-black cursor-pointer  text-center py-2 px-4 rounded-lg"
+            >
+              Log Out
+            </button>
           </div>
         </nav>
 
@@ -120,18 +122,18 @@ const Sidebar = () => {
               <Plus /> Add Blog
             </Link>
             <Link
-              href="/blog-list"
+              href="/blogs"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
               onClick={handleLinkClick} // Close the sidebar when a link is clicked
             >
               <List /> Blog List
             </Link>
             <Link
-              href="/subscription"
+              href="/settings"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
               onClick={handleLinkClick} // Close the sidebar when a link is clicked
             >
-              <Users /> Subscriptions
+              <Users /> settings
             </Link>
           </nav>
 

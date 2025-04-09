@@ -52,7 +52,7 @@ const AddBlog = () => {
 
     try {
       const newBlog = await createBlog(formData);
-      router.push(`/blog-detials/${newBlog._id}`);
+      router.push(`/blog-list/${newBlog._id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create blog");
       console.error("Error creating blog:", err);
