@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie,  deleteCookie } from 'cookies-next';
 
 //  the base API URL using environment variable
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/auth";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://melanin-server-48us.onrender.com/api/auth";
 
 //  types for authentication responses
 export interface AuthResponse {

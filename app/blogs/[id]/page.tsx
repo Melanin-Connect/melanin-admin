@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Sidebar from "../../components/Sidebar";
+import EditBlogModal from "../../components/EditBlogModal";
 import {
   getBlogById,
   likeBlog,
@@ -30,6 +31,7 @@ export default function BlogDetail() {
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [deleteConfirm, setDeleteConfirm] = useState<boolean>(false);
+  const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
 
   // Fetch blog on component mount
   useEffect(() => {
@@ -122,6 +124,16 @@ export default function BlogDetail() {
     setDeleteConfirm(false);
   };
 
+  // Open edit modal
+  const openEditModal = () => {
+    setEditModalOpen(true);
+  };
+
+  // Handle successful blog update
+  const handleBlogUpdate = (updatedBlog: Blog) => {
+    setBlog(updatedBlog);
+  };
+
   return (
     <>
       {/* Sidebar Section */}
@@ -187,12 +199,12 @@ export default function BlogDetail() {
                     Back to blogs
                   </Link>
                   <div className="flex space-x-2">
-                    <Link
-                      href={`/edit-blog/${blog._id}`}
+                    <button
+                      onClick={openEditModal}
                       className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
                     >
                       Edit
-                    </Link>
+                    </button>
                     <button
                       onClick={handleDeleteBlog}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
@@ -347,7 +359,7 @@ export default function BlogDetail() {
 
         {/* Delete Confirmation Modal */}
         {deleteConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-gray-200 bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
               <h3 className="text-xl font-bold mb-4">Delete Blog Post</h3>
               <p className="mb-6">
@@ -371,6 +383,14 @@ export default function BlogDetail() {
             </div>
           </div>
         )}
+
+        {/* Edit Blog Modal */}
+        <EditBlogModal
+          blog={blog}
+          isOpen={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          onSuccess={handleBlogUpdate}
+        />
       </div>
     </>
   );
