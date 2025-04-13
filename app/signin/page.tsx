@@ -48,8 +48,9 @@ const LoginPage = () => {
       } else {
         router.push("/");
       }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred";
+      setError(errorMessage);
       console.error("Login error:", err);
     } finally {
       setLoading(false);

@@ -53,6 +53,7 @@ const ProfilePage = () => {
       } catch (err) {
         setError('Failed to load profile information')
         setIsLoading(false)
+        console.log(err)
       }
     }
 

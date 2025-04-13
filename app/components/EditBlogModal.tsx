@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Blog, BlogFormData, updateBlog } from "../lib/blog-client";
-import Sidebar from "./Sidebar";
+
 
 // Explicitly define the props interface
 interface EditBlogModalProps {
