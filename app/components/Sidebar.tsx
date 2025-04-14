@@ -16,7 +16,7 @@ const Sidebar = () => {
     deleteCookie('userRole');
     
     // Redirect to signin page using Next.js router
-    router.push('/signin');
+    router.push('/');
   };
   
   // Toggle sidebar visibility
