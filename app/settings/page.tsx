@@ -51,7 +51,7 @@ const ProfilePage = () => {
         }))
         setIsLoading(false)
       } catch (err) {
-        setError('Failed to load profile information')
+        setError('Coming Soon')
         setIsLoading(false)
         console.log(err)
       }
