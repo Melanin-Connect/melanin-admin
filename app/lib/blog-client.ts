@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from 'cookies-next';
 
 // The base API URL using environment variable
-const API_URL = process.env.NEXT_PUBLIC_API_BLOG || "http://localhost:5000/api/blogs";
+const API_URL = process.env.NEXT_PUBLIC_API_BLOG || "https://melanin-server-48us.onrender.com/api/blogs";
 
 // Types for blog data - Matching backend mongoose schema
 export interface Comment {
