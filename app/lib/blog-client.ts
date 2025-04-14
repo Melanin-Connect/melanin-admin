@@ -18,7 +18,7 @@ export interface Blog {
   content: string;
   category: string;
   author: string;
-  image: string; // Changed from image to image
+  image: string;
   likes: number;
   comments: Comment[];
   createdAt: Date;
@@ -31,7 +31,7 @@ export interface BlogFormData {
   content: string;
   category: string;
   author: string;
-  image: string; // Changed from image: File | null to image: string
+  image: string;
 }
 
 export interface CommentFormData {
@@ -75,12 +75,11 @@ export async function getBlogById(id: string): Promise<Blog> {
   }
 }
 
-// Create a new blog - Updated to use image instead of File upload
+// Create a new blog
 export async function createBlog(blogData: BlogFormData): Promise<Blog> {
   try {
     const token = getCookie('token');
     
-    // Using explicit console log to help debug
     console.log("Sending blog data to API:", {
       title: blogData.title,
       content: blogData.content,
@@ -89,7 +88,6 @@ export async function createBlog(blogData: BlogFormData): Promise<Blog> {
       image: blogData.image
     });
     
-    // Send JSON with the image explicitly included
     const response = await axios.post(
       `${API_URL}`, 
       {
@@ -97,7 +95,7 @@ export async function createBlog(blogData: BlogFormData): Promise<Blog> {
         content: blogData.content,
         category: blogData.category,
         author: blogData.author,
-        image: blogData.image // Make sure this field name matches what your backend expects
+        image: blogData.image
       },
       {
         headers: {
@@ -124,12 +122,11 @@ export async function createBlog(blogData: BlogFormData): Promise<Blog> {
   }
 }
 
-// Update a blog - Updated to use image
+// Update a blog
 export async function updateBlog(id: string, blogData: Partial<BlogFormData>): Promise<Blog> {
   try {
     const token = getCookie('token');
     
-    // Send regular JSON with all data including image
     const dataToSend = {
       ...(blogData.title && { title: blogData.title }),
       ...(blogData.content && { content: blogData.content }),
@@ -184,7 +181,7 @@ export async function likeBlog(id: string): Promise<Blog> {
 export async function addComment(blogId: string, commentData: CommentFormData): Promise<Blog> {
   try {
     const response = await axios.post(
-      `${API_URL}/${blogId}/comments`, 
+      `${API_URL}/${blogId}/comment`, 
       commentData
     );
     return response.data;
