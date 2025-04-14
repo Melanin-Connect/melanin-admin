@@ -14,11 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <div className="h-screen flex">
+      <body className="min-h-screen">
+        <div className="flex flex-col md:flex-row min-h-screen">
           {/* Sidebar Component */}
-    
-
+          
           {/* Main Content Area */}
           <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">
             {children}
