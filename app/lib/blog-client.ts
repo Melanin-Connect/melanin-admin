@@ -159,10 +159,10 @@ export async function updateBlog(id: string, blogData: Partial<BlogFormData>): P
   }
 }
 
-// Like a blog
+// Like a blog 
 export async function likeBlog(id: string): Promise<Blog> {
   try {
-    const response = await axios.put(`${API_URL}/${id}/like`);
+    const response = await axios.patch(`${API_URL}/${id}/like`);
     return response.data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -203,7 +203,7 @@ export async function deleteComment(blogId: string, commentId: string): Promise<
   try {
     const token = getCookie('token');
     const response = await axios.delete(
-      `${API_URL}/${blogId}/comments/${commentId}`,
+      `${API_URL}/${blogId}/comment/${commentId}`,
       {
         headers: {
           Authorization: token ? `Bearer ${token}` : undefined

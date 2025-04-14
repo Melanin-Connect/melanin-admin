@@ -1,10 +1,10 @@
 import axios from "axios";
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 
-//  the base API URL using environment variable
+// The base API URL using environment variable
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://melanin-server-48us.onrender.com/api/auth";
 
-//  types for authentication responses
+// Types for authentication responses
 export interface AuthResponse {
   token: string;
   role: string;
@@ -21,6 +21,9 @@ export async function loginUser(email: string, password: string): Promise<AuthRe
         password,
       }
     );
+    
+    // Store authentication data on successful login
+    setAuthenticationData(response.data);
     
     return response.data;
   } catch (err) {
@@ -51,6 +54,9 @@ export async function registerUser(
       }
     );
     
+    // Store authentication data on successful registration
+    setAuthenticationData(response.data);
+    
     return response.data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -64,6 +70,26 @@ export async function registerUser(
   }
 }
 
+// Set authentication data in cookies and axios defaults
+export function setAuthenticationData(response: { token: string; role: string }) {
+  // Store the token and user role in cookies
+  setCookie("token", response.token, {
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  
+  setCookie("userRole", response.role, {
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  
+  // Set up axios default authorization header
+  axios.defaults.headers.common['Authorization'] = `Bearer ${response.token}`;
+}
 
 // Get current user token
 export function getToken(): string | null {
@@ -80,8 +106,22 @@ export function isAuthenticated(): boolean {
   return getToken() !== null;
 }
 
+// Logout user
+export function logoutUser() {
+  setCookie("token", "", { maxAge: 0, path: "/" });
+  setCookie("userRole", "", { maxAge: 0, path: "/" });
+  delete axios.defaults.headers.common['Authorization'];
+}
+
 // Configuring axios with auth header (useful for authenticated requests)
 export function configureAxiosWithAuth() {
+  // Set current token if it exists
+  const token = getToken();
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }
+
+  // Add interceptor for future requests
   axios.interceptors.request.use(
     (config) => {
       const token = getToken();
