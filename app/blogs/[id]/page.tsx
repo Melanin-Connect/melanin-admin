@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Sidebar from "../../components/Sidebar";
 import EditBlogModal from "../../components/EditBlogModal";
+
 import {
   getBlogById,
   likeBlog,
@@ -32,6 +33,7 @@ export default function BlogDetail() {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [deleteConfirm, setDeleteConfirm] = useState<boolean>(false);
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
+  const [hasLiked, setHasLiked] = useState(false);
 
   // Fetch blog on component mount
   useEffect(() => {
@@ -62,16 +64,36 @@ export default function BlogDetail() {
     });
   };
 
+  useEffect(() => {
+    const likedPosts = JSON.parse(localStorage.getItem('likedBlogPosts') || '[]');
+    setHasLiked(likedPosts.includes(blogId));
+  }, [blogId]);
+  
   // Handle like blog
   const handleLike = async () => {
+    // Prevent multiple likes on the same blog
+    if (hasLiked) {
+      alert("You've already liked this blog post.");
+      return;
+    }
+    
     try {
       const updatedBlog = await likeBlog(blogId);
       setBlog(updatedBlog);
+      
+      // Mark as liked and save to localStorage
+      setHasLiked(true);
+      const likedPosts = JSON.parse(localStorage.getItem('likedBlogPosts') || '[]');
+      likedPosts.push(blogId);
+      localStorage.setItem('likedBlogPosts', JSON.stringify(likedPosts));
     } catch (err) {
       console.error("Error liking blog:", err);
       alert(err instanceof Error ? err.message : "Failed to like blog");
     }
   };
+ 
+  
+  
 
   // Handle comment submission
   const handleCommentSubmit = async (e: React.FormEvent) => {
