@@ -64,12 +64,6 @@ export async function registerUser(
   }
 }
 
-// Logout user function
-export function logoutUser(): void {
-  deleteCookie('token');
-  deleteCookie('userRole');
-  
-}
 
 // Get current user token
 export function getToken(): string | null {
