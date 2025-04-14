@@ -67,14 +67,14 @@ const LoginPage = () => {
       // Store the token and user role in cookies
       setCookie('token', response.token, {
         maxAge: 60 * 60 * 24 * 7, // 7 days
-        path: '/dashboard',
+        path: '/',
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict'
       });
       
       setCookie('userRole', response.role, {
         maxAge: 60 * 60 * 24 * 7, // 7 days
-        path: '/dashboard',
+        path: '/',
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict'
       });
