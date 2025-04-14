@@ -4,7 +4,7 @@ import Link from "next/link";
 import { loginUser } from "../lib/api-client"; // Import the auth function
 import { setCookie } from 'cookies-next'; // Import setCookie function
 import { useRouter } from "next/navigation"; // Import useRouter for redirection
-import { useToast } from "../components/Toast"; // Import our custom toast hook
+import { useToast } from "./toast"; // Import our custom toast hook
 
 // Define form data interface
 interface LoginFormData {
