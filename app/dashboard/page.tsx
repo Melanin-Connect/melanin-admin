@@ -1,9 +1,9 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { Plus, List, Users, BarChart2 } from 'lucide-react';
-import Link from 'next/link';
-import Sidebar from '../components/Sidebar';
-import { getBlogs, Blog } from '../lib/blog-client';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Plus, List, Users, BarChart2 } from "lucide-react";
+import Link from "next/link";
+import Sidebar from "../components/Sidebar";
+import { getBlogs, Blog } from "../lib/blog-client";
 
 const Dashboard = () => {
   // State for blogs data
@@ -39,11 +39,17 @@ const Dashboard = () => {
   };
 
   // Calculate total comments across all blogs
-  const totalComments = blogs.reduce((sum, blog) => sum + blog.comments.length, 0);
+  const totalComments = blogs.reduce(
+    (sum, blog) => sum + blog.comments.length,
+    0
+  );
 
   // Get the 3 most recent blogs
   const recentBlogs = [...blogs]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
     .slice(0, 4);
 
   return (
@@ -61,7 +67,9 @@ const Dashboard = () => {
           {loading ? (
             <div className="text-sm text-gray-500">Loading data...</div>
           ) : (
-            <div className="text-sm text-gray-500">Last updated: {new Date().toLocaleTimeString()}</div>
+            <div className="text-sm text-gray-500">
+              Last updated: {new Date().toLocaleTimeString()}
+            </div>
           )}
         </header>
 
@@ -69,7 +77,7 @@ const Dashboard = () => {
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
             <span className="block sm:inline">{error}</span>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="ml-2 underline"
             >
@@ -80,36 +88,52 @@ const Dashboard = () => {
 
         {/* Stats Overview */}
         <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-white p-6 rounded-lg flex items-center justify-between 
-          ">
+          <div
+            className="bg-white p-6 rounded-lg flex items-center justify-between 
+          "
+          >
             <div>
-              <h3 className="text-lg font-semibold text-gray-700">Total Blogs</h3>
+              <h3 className="text-lg font-semibold text-gray-700">
+                Total Blogs
+              </h3>
               {loading ? (
                 <div className="h-9 w-8 bg-gray-200 animate-pulse rounded mt-1"></div>
               ) : (
-                <p className="text-3xl font-bold text-blue-600">{blogs.length}</p>
+                <p className="text-3xl font-bold text-blue-600">
+                  {blogs.length}
+                </p>
               )}
             </div>
             <List className="text-blue-600 w-10 h-10" />
           </div>
 
-          <div className="bg-white p-6 rounded-lg flex items-center justify-between 
-          ">
+          <div
+            className="bg-white p-6 rounded-lg flex items-center justify-between 
+          "
+          >
             <div>
-              <h3 className="text-lg font-semibold text-gray-700">Total Comments</h3>
+              <h3 className="text-lg font-semibold text-gray-700">
+                Total Comments
+              </h3>
               {loading ? (
                 <div className="h-9 w-8 bg-gray-200 animate-pulse rounded mt-1"></div>
               ) : (
-                <p className="text-3xl font-bold text-green-600">{totalComments}</p>
+                <p className="text-3xl font-bold text-green-600">
+                  {totalComments}
+                </p>
               )}
             </div>
             <Users className="text-green-600 w-10 h-10" />
           </div>
 
-          <div className="bg-white p-6 rounded-lg flex items-center justify-between 
-          ">
+          <div
+            className="bg-white p-6 rounded-lg flex items-center justify-between 
+          "
+          >
             <div>
-              <h3 className="text-lg font-semibold text-gray-700">Total Likes</h3>
+              <h3 className="text-lg font-semibold text-gray-700">
+                Total Likes
+              </h3>
               {loading ? (
                 <div className="h-9 w-16 bg-gray-200 animate-pulse rounded mt-1"></div>
               ) : (
@@ -124,7 +148,9 @@ const Dashboard = () => {
 
         {/* Quick Actions Section */}
         <section className="bg-white p-6 rounded-lg mb-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            Quick Actions
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
             <Link
               href="/add-blog"
@@ -134,15 +160,13 @@ const Dashboard = () => {
               Add Blog
             </Link>
             <Link
-              href="/"
+              href="/blogs"
               className="flex items-center gap-4 p-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
             >
               <List className="w-8 h-8" />
               View Blogs
             </Link>
-            <div
-              className="flex items-center gap-4 p-4 bg-yellow-500 text-white rounded-lg cursor-not-allowed opacity-60"
-            >
+            <div className="flex items-center gap-4 p-4 bg-yellow-500 text-white rounded-lg cursor-not-allowed opacity-60">
               <Users className="w-8 h-8" />
               Manage Subscriptions
             </div>
@@ -150,18 +174,20 @@ const Dashboard = () => {
         </section>
 
         {/* Recent Blogs Section */}
-        <section className="bg-white p-6 rounded-lg 
-        ">
+        <section
+          className="bg-white p-6 rounded-lg 
+        "
+        >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-gray-800">Recent Blogs</h2>
             <Link
-              href="/"
+              href="/blogs"
               className="text-blue-600 hover:underline text-sm"
             >
               View All
             </Link>
           </div>
-          
+
           {loading ? (
             // Loading state
             <div className="space-y-4">
@@ -187,9 +213,14 @@ const Dashboard = () => {
             // Blog list
             <div className="space-y-4">
               {recentBlogs.map((blog) => (
-                <div key={blog._id} className="p-4 border rounded-lg hover:bg-gray-50 flex justify-between items-center">
+                <div
+                  key={blog._id}
+                  className="p-4 border rounded-lg hover:bg-gray-50 flex justify-between items-center"
+                >
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-800">{blog.title}</h3>
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {blog.title}
+                    </h3>
                     <div className="flex text-sm text-gray-600 space-x-4">
                       <p>Published on {formatDate(blog.createdAt)}</p>
                       <p>By {blog.author}</p>
