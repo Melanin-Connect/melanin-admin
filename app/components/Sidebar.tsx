@@ -37,7 +37,7 @@ const Sidebar = () => {
         <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
         <nav className="flex flex-col mb-[70%] gap-4">
           <Link
-            href="/"
+            href="/dashboard"
             className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
           >
             <Home /> Dashboard
@@ -117,7 +117,7 @@ const Sidebar = () => {
           <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
           <nav className="flex flex-col mb-[70%] gap-4">
             <Link
-              href="/"
+              href="/dashboard"
               className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
               onClick={handleLinkClick} // Close the sidebar when a link is clicked
             >
