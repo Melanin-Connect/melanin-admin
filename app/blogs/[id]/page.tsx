@@ -116,7 +116,7 @@ export default function BlogDetail() {
   const confirmDelete = async () => {
     try {
       await deleteBlog(blogId);
-      router.push("/blog");
+      router.push("/blogs");
     } catch (err) {
       console.error("Error deleting blog:", err);
       alert(err instanceof Error ? err.message : "Failed to delete blog");
